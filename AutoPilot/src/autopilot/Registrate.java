@@ -47,15 +47,15 @@ public class Registrate extends javax.swing.JFrame {
 
         Nombre.addActionListener(this::NombreActionPerformed);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nombre Completo");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Usuario");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Contraseña");
 
@@ -63,15 +63,17 @@ public class Registrate extends javax.swing.JFrame {
 
         N_Usuario.addActionListener(this::N_UsuarioActionPerformed);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Confirmar contraseña ");
 
         N_Contraseña.addActionListener(this::N_ContraseñaActionPerformed);
 
+        Regresar.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 12)); // NOI18N
         Regresar.setText("Regresar");
         Regresar.addActionListener(this::RegresarActionPerformed);
 
+        Registro.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 12)); // NOI18N
         Registro.setText("Registrarte");
         Registro.addActionListener(this::RegistroActionPerformed);
 
@@ -119,7 +121,7 @@ public class Registrate extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Regresar)
                     .addComponent(Registro))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

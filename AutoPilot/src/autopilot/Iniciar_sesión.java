@@ -17,6 +17,23 @@ public class Iniciar_sesión extends javax.swing.JFrame {
      */
     public Iniciar_sesión() {
         initComponents();
+        
+        //Codigo para poder colocar la imagen y que se muestre en todos los dispotivios, ademas de escalarla
+        java.net.URL recurso =
+        getClass().getResource("/imagenes/logo_escala.png");
+
+        if (recurso != null) {
+            javax.swing.ImageIcon original =
+                new javax.swing.ImageIcon(recurso);
+
+            java.awt.Image ajustada = original.getImage()
+                .getScaledInstance(165, 147, java.awt.Image.SCALE_SMOOTH);
+
+            jLabel1.setIcon(new javax.swing.ImageIcon(ajustada));
+            jLabel1.setText("");
+        } else {
+            System.err.println("No se encontró la imagen");
+        }
     }
 
     /**
@@ -42,17 +59,15 @@ public class Iniciar_sesión extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 153));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\AutoPilot-150x150.png")); // NOI18N
-
         Contraseña.addActionListener(this::ContraseñaActionPerformed);
 
         Usuario.addActionListener(this::UsuarioActionPerformed);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Usuario");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contraseña ");
 
@@ -106,7 +121,7 @@ public class Iniciar_sesión extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Entrar)
                     .addComponent(Volver))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(108, 108, 108)
