@@ -43,7 +43,11 @@ public class CompraRepuestos extends javax.swing.JFrame {
         opcionesRepuesto.removeAllItems();
 
         for (Repuesto repuesto : DatosAgencia.getInstancia().getRepuestos()) {
+            
+            if(repuesto.getStock() > 0)
+            {
             opcionesRepuesto.addItem(repuesto.getNombre());
+            }
         }
         
     }

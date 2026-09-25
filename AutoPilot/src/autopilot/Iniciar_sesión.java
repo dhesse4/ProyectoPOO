@@ -194,6 +194,11 @@ public class Iniciar_sesión extends javax.swing.JFrame {
                 "Bienvenido",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE
         );
+        
+        Menu menu = new Menu();
+        menu.setVisible(true);
+        menu.setLocationRelativeTo(null);
+        this.dispose();
 
     } catch (UsuarioNoRegistradoException
             | ContraseñaIncorrectaException error) {
