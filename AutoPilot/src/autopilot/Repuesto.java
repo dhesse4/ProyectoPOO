@@ -79,6 +79,6 @@ public class Repuesto
     
     @Override
     public String toString() {
-        return nombre;
+        return this.nombre + " - " + this.marca;
     }
 }

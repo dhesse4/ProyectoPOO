@@ -111,6 +111,8 @@ public class CompraRepuestos extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Ingresa la cantidad a adquirir");
 
+        txtCantidad.addActionListener(this::txtCantidadActionPerformed);
+
         lblTotal.setFont(new java.awt.Font("Copperplate Gothic Light", 0, 14)); // NOI18N
         lblTotal.setForeground(new java.awt.Color(255, 255, 255));
         lblTotal.setText("Total a cancelar: ");
@@ -216,11 +218,7 @@ public class CompraRepuestos extends javax.swing.JFrame {
     
     //Si quieren comprar más de lo que hay en stock, no se permite
     if (cantidad > repuesto.getStock()) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "No hay suficientes unidades.\n"
-            + "Stock disponible: " + repuesto.getStock()
-        );
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay suficientes unidades.\n" + "Stock disponible: " + repuesto.getStock());
         return;
     }
     
@@ -272,6 +270,26 @@ public class CompraRepuestos extends javax.swing.JFrame {
         repuestos.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
+        // TODO add your handling code here:
+        
+        Repuesto repuesto = buscarRepuestoSeleccionado();
+        
+        int cantidad;
+        cantidad = Integer.parseInt(txtCantidad.getText().trim());
+        
+        if(cantidad <= repuesto.getStock())
+        {
+        double total = cantidad * repuesto.getPrecioVenta();
+
+        lblTotal.setText(String.format("Total: %.2f", total));
+        }
+        else
+        {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay suficientes unidades.\n" + "Stock disponible: " + repuesto.getStock());
+        }
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
     /**
      * @param args the command line arguments
