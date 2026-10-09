@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Menu.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Inicio.java</file>
+            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/InicioVehiculos.java</file>
             <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/InicioRepuestos.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/CompraRepuestos.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/DatosAgencia.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/VentaRepuestos.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Repuesto.java</file>
+            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Vehiculos.java</file>
+            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Automovil.java</file>
         </group>
     </open-files>
 </project-private>
