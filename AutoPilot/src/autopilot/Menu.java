@@ -66,6 +66,7 @@ public class Menu extends javax.swing.JFrame {
         jButton1.setText("Vehiculos");
 
         jButton2.setText("Seguros");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("Repuestos");
         jButton3.addActionListener(this::jButton3ActionPerformed);
@@ -156,6 +157,13 @@ public class Menu extends javax.swing.JFrame {
         repuestos.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        InicioSeguros seguros = new InicioSeguros();
+        seguros.setLocationRelativeTo(null);
+        seguros.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

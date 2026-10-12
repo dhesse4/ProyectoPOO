@@ -15,14 +15,15 @@ public class DatosAgencia
 
     private final List<Repuesto> repuestos;
     //private final List<Auto> autos;
-    //private final List<Seguro> seguros;
+    private final List<Seguros> seguros;
 
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() {
         repuestos = new ArrayList<>();
         //autos = new ArrayList<>();
-        //seguros = new ArrayList<>();
+        seguros = new ArrayList<>();
         iniciarRepuestos();
+        iniciarSeguros();
         
     }
     
@@ -89,6 +90,34 @@ public class DatosAgencia
         ));
     }
     
+    private void iniciarSeguros() {
+    seguros.add(new Seguros(
+        "Seguros G&T", "Todo riesgo",
+        "Daños al vehículo y asistencia vial", 350.00
+    ));
+
+    seguros.add(new Seguros(
+        "Seguros El Roble", "Auto completo",
+        "Daños, robo y protección a ocupantes", 400.00
+    ));
+
+    seguros.add(new Seguros(
+        "Aseguradora General", "Seguro de automóvil",
+        "Protección del vehículo y responsabilidad civil", 325.00
+    ));
+
+    seguros.add(new Seguros(
+        "Seguros Universales", "Seguro de auto",
+        "Protección contra accidentes y robo", 300.00
+    ));
+
+    seguros.add(new Seguros(
+        "MAPFRE Guatemala", "Seguro de automóvil",
+        "Daños al vehículo y asistencia vial", 375.00
+    ));
+}
+    
+    
     public static DatosAgencia getInstancia() {
         return INSTANCIA;
     }
@@ -96,13 +125,8 @@ public class DatosAgencia
     public List<Repuesto> getRepuestos() {
         return repuestos;
     }
-
-    /*public List<Auto> getAutos() {
-        return autos;
-    }
-
-    public List<Seguro> getSeguros() {
+    
+    public List<Seguros> getSeguros() {
         return seguros;
-    }*/
-
+    } 
 }
