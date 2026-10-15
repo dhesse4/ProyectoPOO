@@ -197,68 +197,68 @@ public class CompraRepuestos extends javax.swing.JFrame {
         
         Repuesto repuesto = buscarRepuestoSeleccionado();
         
-    // SI no hay nada seleccionado en el combobox, se pide al usuario que elija uno
-    if (repuesto == null) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "Selecciona un repuesto."
+        // SI no hay nada seleccionado en el combobox, se pide al usuario que elija uno
+        if (repuesto == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, "Selecciona un repuesto."
+            );
+            return;
+        }
+
+        int cantidad;
+        cantidad = Integer.parseInt(txtCantidad.getText().trim());
+
+        //Verificamos que la cantidad a comprar sea valida
+        if (cantidad <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, "La cantidad debe ser mayor que cero."
+            );
+            return;
+        }
+
+        //Si quieren comprar más de lo que hay en stock, no se permite
+        if (cantidad > repuesto.getStock()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay suficientes unidades.\n" + "Stock disponible: " + repuesto.getStock());
+            return;
+        }
+
+        //El precio total de la compra
+        double total = cantidad * repuesto.getPrecioVenta();
+
+        lblTotal.setText(String.format("Total: %.2f", total));
+
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            "Repuesto: " + repuesto.getNombre()
+            + "\nCantidad: " + cantidad
+            + "\nTotal: " + String.format("%.2f", total)
+            + "\n¿Confirmar la venta?",
+            "Confirmar venta",
+            javax.swing.JOptionPane.YES_NO_OPTION
         );
-        return;
-    }
 
-    int cantidad;
-    cantidad = Integer.parseInt(txtCantidad.getText().trim());
+        if (respuesta != javax.swing.JOptionPane.YES_OPTION) {
+            return;
+        }
 
-    //Verificamos que la cantidad a comprar sea valida
-    if (cantidad <= 0) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this, "La cantidad debe ser mayor que cero."
-        );
-        return;
-    }
-    
-    //Si quieren comprar más de lo que hay en stock, no se permite
-    if (cantidad > repuesto.getStock()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay suficientes unidades.\n" + "Stock disponible: " + repuesto.getStock());
-        return;
-    }
-    
-    //El precio total de la compra
-    double total = cantidad * repuesto.getPrecioVenta();
+        // Verificar nuevamente por si la otra ventana cambio el stock.
+        if (cantidad > repuesto.getStock()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "El stock cambió. Disponible: " + repuesto.getStock()
+            );
+            return;
+        }
 
-    lblTotal.setText(String.format("Total: %.2f", total));
+        repuesto.setStock(repuesto.getStock() - cantidad);
 
-    int respuesta = javax.swing.JOptionPane.showConfirmDialog(
-        this,
-        "Repuesto: " + repuesto.getNombre()
-        + "\nCantidad: " + cantidad
-        + "\nTotal: " + String.format("%.2f", total)
-        + "\n¿Confirmar la venta?",
-        "Confirmar venta",
-        javax.swing.JOptionPane.YES_NO_OPTION
-    );
-
-    if (respuesta != javax.swing.JOptionPane.YES_OPTION) {
-        return;
-    }
-
-    // Verificar nuevamente por si la otra ventana cambio el stock.
-    if (cantidad > repuesto.getStock()) {
         javax.swing.JOptionPane.showMessageDialog(
             this,
-            "El stock cambió. Disponible: " + repuesto.getStock()
+            "Venta realizada correctamente.\n"
+            + "Stock restante: " + repuesto.getStock()
         );
-        return;
-    }
 
-    repuesto.setStock(repuesto.getStock() - cantidad);
-
-    javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Venta realizada correctamente.\n"
-        + "Stock restante: " + repuesto.getStock()
-    );
-
-    txtCantidad.setText("");
+        txtCantidad.setText("");
         
     }//GEN-LAST:event_BtnCompraActionPerformed
 

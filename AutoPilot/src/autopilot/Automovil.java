@@ -4,6 +4,8 @@
  */
 package autopilot;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Daniel Hesse
@@ -14,9 +16,10 @@ public class Automovil extends Vehiculos
     private Boolean esElectrico;
             
     public Automovil(String marca, String modelo, String placa, String motor, Boolean deAgencia, Double precio,
+                     LocalDate ultimoMantenimiento, LocalDate proximoMantenimiento,
                      Boolean esAutomatico, Boolean esElectrico) 
     {
-        super(marca, modelo, placa, motor, deAgencia, precio);
+        super(marca, modelo, placa, motor, deAgencia, precio, ultimoMantenimiento, proximoMantenimiento);
         this.esAutomatico = esAutomatico;
         this.esElectrico = esElectrico;
     }
@@ -30,7 +33,7 @@ public class Automovil extends Vehiculos
         this.esAutomatico = automatico;
     }
     
-    public Boolean setElectrico()
+    public Boolean getElectrico()
     {
         return this.esElectrico;
     }
@@ -38,5 +41,7 @@ public class Automovil extends Vehiculos
     {
         this.esElectrico = electrico;
     }
+    
+   
     
 }

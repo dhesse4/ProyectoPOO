@@ -64,6 +64,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("Menu principal");
 
         jButton1.setText("Vehiculos");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Seguros");
         jButton2.addActionListener(this::jButton2ActionPerformed);
@@ -164,6 +165,15 @@ public class Menu extends javax.swing.JFrame {
         seguros.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        InicioVehiculos inicio = new InicioVehiculos();
+        inicio.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

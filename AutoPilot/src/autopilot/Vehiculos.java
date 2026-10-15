@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package autopilot;
+import java.time.LocalDate;
 
 /**
  *
@@ -16,6 +17,8 @@ public class Vehiculos
     private String motor;
     private Boolean deAgencia;
     private Double precio;
+    private LocalDate ultimoMantenimiento;
+    private LocalDate proximoMantenimiento;
     
     public Vehiculos
     (
@@ -24,7 +27,9 @@ public class Vehiculos
         String placa,
         String motor,
         Boolean deAgencia,
-        Double precio
+        Double precio,
+        LocalDate ultimoMantenimiento,
+        LocalDate proximoMantenimiento
     )
     {
         this.marca = marca;
@@ -33,6 +38,8 @@ public class Vehiculos
         this.motor = motor;
         this.deAgencia = deAgencia;
         this.precio = precio;
+        this.ultimoMantenimiento = ultimoMantenimiento;
+        this.proximoMantenimiento = proximoMantenimiento;
     }
     
     public String getMarca()
@@ -88,4 +95,29 @@ public class Vehiculos
     {
         this.precio = precio;
     }
+    
+    public LocalDate getProxMantenimiento()
+    {
+        return this.proximoMantenimiento;
+    }
+    public void setProxMantenimiento(LocalDate mant)
+    {
+        this.proximoMantenimiento = mant;
+    }
+    
+    public LocalDate getUltMantenimiento()
+    {
+        return this.ultimoMantenimiento;
+    }
+    public void setUltMantenimiento(LocalDate mant)
+    {
+        this.ultimoMantenimiento = mant;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.marca + " - " + this.modelo + " (" + this.placa + ")";
+    }
+
 }
