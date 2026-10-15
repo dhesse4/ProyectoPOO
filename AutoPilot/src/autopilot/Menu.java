@@ -18,6 +18,9 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        
         //Codigo para poder colocar la imagen y que se muestre en todos los dispotivios, ademas de escalarla
         java.net.URL recurso =
         getClass().getResource("/imagenes/logo_escala.png");
@@ -57,7 +60,7 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 51, 153));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 153));
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
