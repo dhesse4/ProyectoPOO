@@ -6,7 +6,7 @@ package autopilot;
 
 /**
  *
- * @author Daniel Hesse
+ * @author Pablo Canton
  */
 public class VerEmpleados extends javax.swing.JFrame {
     

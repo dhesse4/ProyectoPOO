@@ -6,7 +6,7 @@ package autopilot;
 
 /**
  *
- * @author Daniel Hesse
+ * @author Pablo Canton
  */
 public class AgregarTaller extends javax.swing.JFrame {
     

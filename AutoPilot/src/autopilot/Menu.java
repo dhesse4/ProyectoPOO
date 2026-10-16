@@ -7,7 +7,7 @@ package autopilot;
 
 /**
  *
- * @author Daniel Hesse
+ * @author Pablo Canton
  */
 public class Menu extends javax.swing.JFrame {
     
