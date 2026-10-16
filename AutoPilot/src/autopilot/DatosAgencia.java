@@ -19,16 +19,26 @@ public class DatosAgencia
     private final List<Seguros> seguros;
     
     private final List<Vehiculos> vehiculos; 
+    
+    private final List<Taller> talleres;
+    
+    private ArrayList<Empleado> empleados;
 
     // Privado para que ninguna ventana cree otra instancia.
-    private DatosAgencia() {
+    private DatosAgencia() 
+    {
         repuestos = new ArrayList<>();
         vehiculos = new ArrayList<>();
         seguros = new ArrayList<>();
+        talleres = new ArrayList<>();
+        empleados = new ArrayList<>();
+        
         iniciarRepuestos();
         iniciarSeguros();
         iniciarVehiculos();
         
+        iniciarEmpleados();
+        iniciarTalleres();
     }
     
     private void iniciarRepuestos()
@@ -204,6 +214,88 @@ public class DatosAgencia
         ));
     }
     
+    private void iniciarEmpleados() 
+    {
+        empleados.add(new Empleado(
+            1, "Carlos", "Pérez", "5555-1001", true
+        ));
+
+        empleados.add(new Empleado(
+            2, "Ana", "López", "5555-1002", true
+        ));
+
+        empleados.add(new Empleado(
+            3, "Luis", "García", "5555-1003", true
+        ));
+
+        empleados.add(new Empleado(
+            4, "María", "Hernández", "5555-1004", true
+        ));
+
+        empleados.add(new Empleado(
+            5, "José", "Ramírez", "5555-1005", true
+        ));
+    }
+
+    private void iniciarTalleres() 
+    {
+        talleres.add(new Taller(
+            1,
+            "Taller Central",
+            "Zona 1, Ciudad de Guatemala",
+            "2222-1001",
+            "central@example.com",
+            "Lunes a sábado de 8:00 a 17:00",
+            empleados.get(0),
+            23.0 / 5, 5, true
+        ));
+
+        talleres.add(new Taller(
+            2,
+            "Taller El Motor",
+            "Zona 7, Ciudad de Guatemala",
+            "2222-1002",
+            "elmotor@example.com",
+            "Lunes a viernes de 7:00 a 18:00",
+            empleados.get(1),
+            16.0 / 4, 4, true
+        ));
+
+        talleres.add(new Taller(
+            3,
+            "Taller Servicio Express",
+            "Zona 11, Ciudad de Guatemala",
+            "2222-1003",
+            "express@example.com",
+            "Lunes a sábado de 8:00 a 18:00",
+            empleados.get(2),
+            15.0 / 3, 3, true
+        ));
+
+        talleres.add(new Taller(
+            4,
+            "Taller Automotriz del Sur",
+            "Zona 2, Villa Nueva",
+            "2222-1004",
+            "delsur@example.com",
+            "Lunes a viernes de 8:00 a 17:00",
+            empleados.get(3),
+            14.0 / 4, 4, false
+        ));
+
+        talleres.add(new Taller(
+            5,
+            "Taller Ruta Segura",
+            "Zona 3, Mixco",
+            "2222-1005",
+            "rutasegura@example.com",
+            "Lunes a sábado de 7:00 a 16:00",
+            empleados.get(4),
+            0.0, 0, true
+        ));
+    }
+    
+    
     public static DatosAgencia getInstancia() {
         return INSTANCIA;
     }
@@ -219,5 +311,15 @@ public class DatosAgencia
     public List<Vehiculos> getVehiculos()
     {
         return vehiculos;
+    }
+    
+    public List<Taller> getTalleres()
+    {
+        return talleres;
+    }
+    
+    public List <Empleado> getEmpleados()
+    {
+        return empleados;
     }
 }

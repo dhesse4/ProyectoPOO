@@ -64,7 +64,8 @@ public class VentaVehiculos extends javax.swing.JFrame {
         
     }
     
-        public Vehiculos vehiculoSeleccionado()
+    
+    public Vehiculos vehiculoSeleccionado()
     {
         Vehiculos seleccionado = (Vehiculos) opcionesVehiculos.getSelectedItem();
 
