@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Dell
+ * @author María Cajas
  */
 public class DatosUsuarios {
     public static ArrayList<Usuario> usuarios = new ArrayList<>();

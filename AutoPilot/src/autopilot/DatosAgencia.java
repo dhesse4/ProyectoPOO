@@ -23,6 +23,8 @@ public class DatosAgencia
     private final List<Taller> talleres;
     
     private ArrayList<Empleado> empleados;
+    
+    private final List<Anuncio> anuncios;
 
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() 
@@ -32,6 +34,7 @@ public class DatosAgencia
         seguros = new ArrayList<>();
         talleres = new ArrayList<>();
         empleados = new ArrayList<>();
+        anuncios = new ArrayList<>();
         
         iniciarRepuestos();
         iniciarSeguros();
@@ -321,5 +324,9 @@ public class DatosAgencia
     public List <Empleado> getEmpleados()
     {
         return empleados;
+    }
+    
+    public List<Anuncio> getAnuncios() {
+    return anuncios;
     }
 }

@@ -6,7 +6,7 @@ package autopilot;
 
 /**
  *
- * @author Dell
+ * @author María Cajas
  */
 public class InicioSeguros extends javax.swing.JFrame {
     
