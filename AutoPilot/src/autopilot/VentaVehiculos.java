@@ -41,16 +41,7 @@ public class VentaVehiculos extends javax.swing.JFrame {
         }
         
         
-        for (Vehiculos vehiculo : DatosAgencia.getInstancia().getVehiculos()) 
-        {
-            
-            if(vehiculo != null)
-            {
-                ((javax.swing.JComboBox) opcionesVehiculos).addItem(vehiculo);
-            }
-        }
-        
-        opcionesVehiculos.setSelectedIndex(-1);
+        actualizarOpcionesVehiculos();
         
         tablaVehiculo.setModel(new javax.swing.table.DefaultTableModel(
         new Object[][] {},
@@ -79,6 +70,17 @@ public class VentaVehiculos extends javax.swing.JFrame {
         }
     }
     
+    private void actualizarOpcionesVehiculos() 
+    {
+        opcionesVehiculos.removeAllItems();
+
+        for (Vehiculos vehiculo : datos.getVehiculos()) {
+            ((javax.swing.JComboBox) opcionesVehiculos)
+                    .addItem(vehiculo);
+        }
+
+        opcionesVehiculos.setSelectedIndex(-1);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -274,7 +276,7 @@ public class VentaVehiculos extends javax.swing.JFrame {
         
         if (vehiculoAdquirido == null) {
             javax.swing.JOptionPane.showMessageDialog(
-                this, "Selecciona un repuesto."
+                this, "Selecciona un vehículo."
             );
             return;
         }
@@ -321,26 +323,45 @@ public class VentaVehiculos extends javax.swing.JFrame {
         
         if (respuesta == javax.swing.JOptionPane.YES_OPTION) 
         {
-            datos.getVehiculos().remove(vehiculoAdquirido);
-            javax.swing.JOptionPane.showMessageDialog(
-                this, "Gracias por tu compra!!!."
-            );
-            
-            for (Vehiculos vehiculo : DatosAgencia.getInstancia().getVehiculos()) 
-            {
+            try {
+                datos.venderVehiculo(vehiculoAdquirido);
 
-                if(vehiculo != null)
-                {
-                    ((javax.swing.JComboBox) opcionesVehiculos).addItem(vehiculo);
-                }
+                actualizarOpcionesVehiculos();
+
+                javax.swing.table.DefaultTableModel modelo =
+                        (javax.swing.table.DefaultTableModel)
+                                tablaVehiculo.getModel();
+
+                modelo.setRowCount(0);
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "¡Gracias por tu compra! "
+                                + "La operación quedó guardada."
+                );
+
+            } catch (IllegalArgumentException e) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        e.getMessage()
+                );
+
+            } catch (java.io.IOException e) {
+                logger.log(
+                        java.util.logging.Level.SEVERE,
+                        "Error al guardar la venta del vehículo",
+                        e
+                );
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "No se pudo guardar la venta.\n"
+                                + "El vehículo sigue en el catálogo.\n"
+                                + e.getMessage(),
+                        "Error de guardado",
+                        javax.swing.JOptionPane.ERROR_MESSAGE
+                );
             }
-
-            opcionesVehiculos.setSelectedIndex(-1);
-            
-             javax.swing.table.DefaultTableModel modelo =
-            (javax.swing.table.DefaultTableModel) tablaVehiculo.getModel();
-
-            modelo.setRowCount(0);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

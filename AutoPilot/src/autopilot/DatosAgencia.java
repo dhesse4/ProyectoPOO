@@ -30,6 +30,8 @@ public class DatosAgencia
     private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
     private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
     private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
+    private final SeguroRepositorio seguroRepositorio = new SeguroRepositorio();
+    private final VehiculoRepositorio vehiculoRepositorio = new VehiculoRepositorio();
     private final List<Anuncio> anuncios;
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() 
@@ -42,8 +44,8 @@ public class DatosAgencia
         anuncios = new ArrayList<>();
         
         cargarRepuestos();
-        iniciarSeguros();
-        iniciarVehiculos();
+        cargarSeguros();
+        cargarVehiculos();
         cargarEmpleados();
         cargarTalleres();
     }
@@ -520,6 +522,123 @@ public class DatosAgencia
         repuesto.setStock(nuevoStock);
     }
     
+    private void cargarSeguros() 
+    {
+        try {
+            try {
+                List<Seguros> cargados =
+                        seguroRepositorio.cargar();
+
+                seguros.clear();
+                seguros.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                iniciarSeguros();
+                seguroRepositorio.guardar(seguros);
+            }
+
+            System.out.println(
+                    "Archivo de seguros: "
+                            + seguroRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los seguros.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de seguros.",
+                    e
+            );
+        }
+    }
+
+    public synchronized void agregarSeguro(Seguros seguro)
+            throws IOException {
+
+        List<Seguros> nuevaLista = new ArrayList<>(seguros);
+        nuevaLista.add(seguro);
+
+        // Primero guardamos. Si falla, la lista actual queda igual.
+        seguroRepositorio.guardar(nuevaLista);
+
+        seguros.clear();
+        seguros.addAll(nuevaLista);
+    }
+    
+    private void cargarVehiculos() {
+        try {
+            try {
+                List<Vehiculos> cargados =
+                        vehiculoRepositorio.cargar();
+
+                vehiculos.clear();
+                vehiculos.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                iniciarVehiculos();
+                vehiculoRepositorio.guardar(vehiculos);
+            }
+
+            System.out.println(
+                    "Archivo de vehículos: "
+                            + vehiculoRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los vehículos.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de vehículos.",
+                    e
+            );
+        }
+    }
+
+    public synchronized void agregarVehiculo(Vehiculos vehiculo)
+            throws IOException {
+
+        List<Vehiculos> nuevaLista = new ArrayList<>(vehiculos);
+        nuevaLista.add(vehiculo);
+
+        vehiculoRepositorio.guardar(nuevaLista);
+
+        vehiculos.clear();
+        vehiculos.addAll(nuevaLista);
+    }
+
+    public synchronized void venderVehiculo(Vehiculos vehiculo)
+            throws IOException {
+
+        if (vehiculo == null || !vehiculos.contains(vehiculo)) {
+            throw new IllegalArgumentException(
+                    "El vehículo seleccionado ya no está disponible."
+            );
+        }
+
+        List<Vehiculos> nuevaLista = new ArrayList<>(vehiculos);
+        nuevaLista.remove(vehiculo);
+
+        vehiculoRepositorio.guardar(nuevaLista);
+
+        vehiculos.clear();
+        vehiculos.addAll(nuevaLista);
+    }
     
     public static DatosAgencia getInstancia() {
         return INSTANCIA;

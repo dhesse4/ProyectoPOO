@@ -21,6 +21,10 @@ public class Seguros {
         setPrecio(precio);
     }
     
+    public Seguros() {
+    // Para reconstruir los objetos desde JSON.
+    }
+    
     public String getAseguradora() {
         return aseguradora;
     }

@@ -246,9 +246,7 @@ public class VentaRepuestos extends javax.swing.JFrame {
             );
             
             //lo añadimos directo a los datos de la agencia para que se pueda usar globalmente
-            DatosAgencia.getInstancia()
-                        .getRepuestos()
-                        .add(nuevoRepuesto);
+            datos.agregarRepuesto(nuevoRepuesto);
 
             javax.swing.JOptionPane.showMessageDialog(
                 this, "Repuesto publicado correctamente."
@@ -266,8 +264,29 @@ public class VentaRepuestos extends javax.swing.JFrame {
                 this,
                 "Ingresa un precio válido y una cantidad entera.\n"
                 + "Para los decimales, utiliza punto: 125.50"
-            );
+            ); 
         }
+          catch (IllegalArgumentException e) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                e.getMessage()
+        );
+
+        } catch (java.io.IOException e) {
+        logger.log(
+                java.util.logging.Level.SEVERE,
+                "Error al guardar el repuesto",
+                e
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No se pudo guardar el repuesto.\n"
+                        + e.getMessage(),
+                "Error de guardado",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

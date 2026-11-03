@@ -1,0 +1,38 @@
+[
+  {
+    "aseguradora": "Seguros G\u0026T",
+    "tipo": "Todo riesgo",
+    "cobertura": "Daños al vehículo y asistencia vial",
+    "precio": 350.0
+  },
+  {
+    "aseguradora": "Seguros El Roble",
+    "tipo": "Auto completo",
+    "cobertura": "Daños, robo y protección a ocupantes",
+    "precio": 400.0
+  },
+  {
+    "aseguradora": "Aseguradora General",
+    "tipo": "Seguro de automóvil",
+    "cobertura": "Protección del vehículo y responsabilidad civil",
+    "precio": 325.0
+  },
+  {
+    "aseguradora": "Seguros Universales",
+    "tipo": "Seguro de auto",
+    "cobertura": "Protección contra accidentes y robo",
+    "precio": 300.0
+  },
+  {
+    "aseguradora": "MAPFRE Guatemala",
+    "tipo": "Seguro de automóvil",
+    "cobertura": "Daños al vehículo y asistencia vial",
+    "precio": 375.0
+  },
+  {
+    "aseguradora": "Aseguradora La Ceiba",
+    "tipo": "Todo riesgo",
+    "cobertura": "Total",
+    "precio": 400.0
+  }
+]

@@ -301,65 +301,110 @@ public class IngresoVehiculos extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-        String placa = placaTxt.getText();
-        String marca = marcaTxt.getText();
-        String modelo = modeloTxt.getText();
-        String motor = motorTxt.getText();
-        boolean deAgencia = "Si".equals(agenciaCombo.getSelectedItem());
-        Double precio = Double.parseDouble(precioTxt.getText());
-        
-        try 
-        {
+         try 
+         {
+            String placa = placaTxt.getText().trim();
+            String marca = marcaTxt.getText().trim();
+            String modelo = modeloTxt.getText().trim();
+            String motor = motorTxt.getText().trim();
+
+            boolean deAgencia =
+                    "Si".equals(agenciaCombo.getSelectedItem());
+
+            double precio =
+                    Double.parseDouble(precioTxt.getText().trim());
+
             fechaUltimoMantenimiento.commitEdit();
 
             java.util.Date fecha =
-                (java.util.Date) fechaUltimoMantenimiento.getValue();
+                    (java.util.Date) fechaUltimoMantenimiento.getValue();
 
-            LocalDate ultMantenimiento = fecha.toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDate();
+            LocalDate ultimo = fecha.toInstant()
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDate();
 
+            Vehiculos nuevo;
 
-            if ("Automovil".equals(jComboBox1.getSelectedItem())) 
-            {
-                boolean automatico = "Si".equals(jComboBox4.getSelectedItem());
-                boolean electrico = "Si".equals(jComboBox3.getSelectedItem());
-                
-                int intervaloMeses = electrico ? 12 : 6;
+            if ("Automovil".equals(jComboBox1.getSelectedItem())) {
+                boolean automatico =
+                        "Si".equals(jComboBox4.getSelectedItem());
 
-                LocalDate proximoMantenimiento =
-                    ultMantenimiento.plusMonths(intervaloMeses);
-                
-                datos.getVehiculos().add(new Automovil(
-                    marca, modelo, placa, motor, deAgencia,
-                    precio, ultMantenimiento, proximoMantenimiento,
-                    automatico, electrico
-                ));
+                boolean electrico =
+                        "Si".equals(jComboBox3.getSelectedItem());
+
+                LocalDate proximo =
+                        ultimo.plusMonths(electrico ? 12 : 6);
+
+                nuevo = new Automovil(
+                        marca, modelo, placa, motor, deAgencia,
+                        precio, ultimo, proximo,
+                        automatico, electrico
+                );
+
+            } else if ("Motocicleta".equals(
+                    jComboBox1.getSelectedItem())) {
+
+                String tipoMoto = variable1txt.getText().trim();
+
+                int cilindraje = Integer.parseInt(
+                        variable2txt.getText().trim()
+                );
+
+                LocalDate proximo = ultimo.plusMonths(6);
+
+                nuevo = new Motocicleta(
+                        marca, modelo, placa, motor, deAgencia,
+                        precio, ultimo, proximo,
+                        tipoMoto, cilindraje
+                );
+
+            } else {
+                throw new IllegalArgumentException(
+                        "Selecciona un tipo de vehículo."
+                );
             }
-            else
-            {
-                String tipoMoto = variable1txt.getText();
-                Integer cilindraje = Integer.parseInt(variable2txt.getText());
-                
-                int intervaloMeses = 6;
 
-                LocalDate proximoMantenimiento =
-                    ultMantenimiento.plusMonths(intervaloMeses);
-                
-                datos.getVehiculos().add(new Motocicleta(
-                    marca, modelo, placa, motor, deAgencia,
-                    precio, ultMantenimiento, proximoMantenimiento,
-                    tipoMoto, cilindraje
-                ));
-            }
-            
+            datos.agregarVehiculo(nuevo);
+
             javax.swing.JOptionPane.showMessageDialog(
-                this, "Vehiculo ingresado correctamente!."
+                    this,
+                    "Vehículo ingresado y guardado correctamente."
             );
 
-        } catch (java.text.ParseException ex) {
+        } catch (NumberFormatException e) {
             javax.swing.JOptionPane.showMessageDialog(
-                this, "Ingresa una fecha válida."
+                    this,
+                    "Ingresa un precio válido y, para motocicletas, "
+                            + "un cilindraje entero."
+            );
+
+        } catch (IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage()
+            );
+
+        } catch (java.text.ParseException
+                | java.time.DateTimeException e) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Ingresa una fecha válida."
+            );
+
+        } catch (java.io.IOException e) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al guardar el vehículo",
+                    e
+            );
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el vehículo.\n"
+                            + e.getMessage(),
+                    "Error de guardado",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
         

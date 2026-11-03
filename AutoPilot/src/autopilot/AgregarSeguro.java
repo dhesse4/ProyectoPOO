@@ -249,33 +249,67 @@ public class AgregarSeguro extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
         String aseguradora = jTextField1.getText().trim();
         String tipo = (String) jComboBox1.getSelectedItem();
         String cobertura = jTextField2.getText().trim();
         String precioTexto = jTextField3.getText().trim();
 
-        if (aseguradora.isEmpty() || cobertura.isEmpty() || precioTexto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Completa todos los campos.");
+        if (aseguradora.isEmpty()
+                || cobertura.isEmpty()
+                || precioTexto.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Completa todos los campos."
+            );
             return;
         }
 
         try {
             double precio = Double.parseDouble(precioTexto);
 
-            if (precio < 0) {
-                JOptionPane.showMessageDialog(this, "El precio no puede ser negativo.");
-                return;
-            }
+            // El constructor valida también el tipo y el precio.
+            Seguros seguro = new Seguros(
+                    aseguradora, tipo, cobertura, precio
+            );
 
-            Seguros seguro = new Seguros(aseguradora, tipo, cobertura, precio);
-            DatosAgencia.getInstancia().getSeguros().add(seguro);
+            DatosAgencia.getInstancia().agregarSeguro(seguro);
 
-            JOptionPane.showMessageDialog(this, "Seguro agregado correctamente.");
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seguro agregado y guardado correctamente."
+            );
+
             limpiarCampos();
 
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Escribe un precio válido, por ejemplo: 350.00");
-                }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Escribe un precio válido, por ejemplo: 350.00"
+            );
+
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage()
+            );
+
+        } catch (java.io.IOException e) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al guardar el seguro",
+                    e
+            );
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el seguro.\n"
+                            + e.getMessage(),
+                    "Error de guardado",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

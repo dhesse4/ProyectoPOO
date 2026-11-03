@@ -1,0 +1,79 @@
+[
+  {
+    "nombre": "Filtro de aceite",
+    "marca": "Bosch",
+    "descripcion": "Filtro de aceite para motor",
+    "precioVenta": 85.0,
+    "stock": 20
+  },
+  {
+    "nombre": "Filtro de aire",
+    "marca": "Mann",
+    "descripcion": "Filtro de aire para motor",
+    "precioVenta": 120.0,
+    "stock": 15
+  },
+  {
+    "nombre": "Pastillas de freno",
+    "marca": "Brembo",
+    "descripcion": "Juego de pastillas de freno delanteras",
+    "precioVenta": 350.0,
+    "stock": 12
+  },
+  {
+    "nombre": "Bujía",
+    "marca": "NGK",
+    "descripcion": "Bujía de encendido",
+    "precioVenta": 45.0,
+    "stock": 40
+  },
+  {
+    "nombre": "Batería",
+    "marca": "LTH",
+    "descripcion": "Batería de 12 voltios",
+    "precioVenta": 950.0,
+    "stock": 8
+  },
+  {
+    "nombre": "Amortiguador",
+    "marca": "Monroe",
+    "descripcion": "Amortiguador delantero",
+    "precioVenta": 480.0,
+    "stock": 10
+  },
+  {
+    "nombre": "Correa de distribución",
+    "marca": "Gates",
+    "descripcion": "Correa dentada de distribución",
+    "precioVenta": 250.0,
+    "stock": 14
+  },
+  {
+    "nombre": "Disco de freno",
+    "marca": "Brembo",
+    "descripcion": "Disco de freno delantero",
+    "precioVenta": 420.0,
+    "stock": 16
+  },
+  {
+    "nombre": "Radiador",
+    "marca": "Denso",
+    "descripcion": "Radiador del sistema de refrigeración",
+    "precioVenta": 1250.0,
+    "stock": 5
+  },
+  {
+    "nombre": "Alternador",
+    "marca": "Bosch",
+    "descripcion": "Alternador para sistema eléctrico de 12 voltios",
+    "precioVenta": 1800.0,
+    "stock": 6
+  },
+  {
+    "nombre": "Luces delanteras",
+    "marca": "KIA",
+    "descripcion": "Luces de buena calidad",
+    "precioVenta": 1500.0,
+    "stock": 7
+  }
+]
