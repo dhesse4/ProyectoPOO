@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "nombre": "Taller Central",
+    "direccion": "Zona 1, Ciudad de Guatemala",
+    "telefono": "2222-1001",
+    "correo": "central@example.com",
+    "horario": "Lunes a sábado de 8:00 a 17:00",
+    "gerenteId": 1,
+    "ratingPromedio": 4.6,
+    "cantidadResenas": 5,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Taller El Motor",
+    "direccion": "Zona 7, Ciudad de Guatemala",
+    "telefono": "2222-1002",
+    "correo": "elmotor@example.com",
+    "horario": "Lunes a viernes de 7:00 a 18:00",
+    "gerenteId": 2,
+    "ratingPromedio": 4.0,
+    "cantidadResenas": 4,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Taller Servicio Express",
+    "direccion": "Zona 11, Ciudad de Guatemala",
+    "telefono": "2222-1003",
+    "correo": "express@example.com",
+    "horario": "Lunes a sábado de 8:00 a 18:00",
+    "gerenteId": 3,
+    "ratingPromedio": 5.0,
+    "cantidadResenas": 3,
+    "activo": true
+  },
+  {
+    "id": 4,
+    "nombre": "Taller Automotriz del Sur",
+    "direccion": "Zona 2, Villa Nueva",
+    "telefono": "2222-1004",
+    "correo": "delsur@example.com",
+    "horario": "Lunes a viernes de 8:00 a 17:00",
+    "gerenteId": 4,
+    "ratingPromedio": 3.5,
+    "cantidadResenas": 4,
+    "activo": false
+  },
+  {
+    "id": 5,
+    "nombre": "Taller Ruta Segura",
+    "direccion": "Zona 3, Mixco",
+    "telefono": "2222-1005",
+    "correo": "rutasegura@example.com",
+    "horario": "Lunes a sábado de 7:00 a 16:00",
+    "gerenteId": 5,
+    "ratingPromedio": 0.0,
+    "cantidadResenas": 0,
+    "activo": true
+  },
+  {
+    "id": 6,
+    "nombre": "HezzyMotors",
+    "direccion": "Zona 7 Xela",
+    "telefono": "85639770",
+    "correo": "heztal@gmail.com",
+    "horario": "7:00 am a 5:00 pm",
+    "gerenteId": 6,
+    "ratingPromedio": 4.0,
+    "cantidadResenas": 2,
+    "activo": true
+  }
+]

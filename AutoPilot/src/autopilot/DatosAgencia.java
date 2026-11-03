@@ -6,6 +6,9 @@ package autopilot;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 /**
  *
  * @author Daniel Hesse
@@ -23,6 +26,10 @@ public class DatosAgencia
     private final List<Taller> talleres;
     
     private ArrayList<Empleado> empleados;
+    
+    private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
+    private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
+    private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
 
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() 
@@ -33,12 +40,12 @@ public class DatosAgencia
         talleres = new ArrayList<>();
         empleados = new ArrayList<>();
         
-        iniciarRepuestos();
+        cargarRepuestos();
         iniciarSeguros();
         iniciarVehiculos();
-        
-        iniciarEmpleados();
-        iniciarTalleres();
+
+        cargarEmpleados();
+        cargarTalleres();
     }
     
     private void iniciarRepuestos()
@@ -239,60 +246,278 @@ public class DatosAgencia
 
     private void iniciarTalleres() 
     {
-        talleres.add(new Taller(
-            1,
-            "Taller Central",
-            "Zona 1, Ciudad de Guatemala",
-            "2222-1001",
-            "central@example.com",
-            "Lunes a sábado de 8:00 a 17:00",
-            empleados.get(0),
-            23.0 / 5, 5, true
-        ));
+        agregarTallerInicial(
+                1, "Taller Central",
+                "Zona 1, Ciudad de Guatemala",
+                "2222-1001", "central@example.com",
+                "Lunes a sábado de 8:00 a 17:00",
+                1, 23.0 / 5, 5, true
+        );
+
+        agregarTallerInicial(
+                2, "Taller El Motor",
+                "Zona 7, Ciudad de Guatemala",
+                "2222-1002", "elmotor@example.com",
+                "Lunes a viernes de 7:00 a 18:00",
+                2, 16.0 / 4, 4, true
+        );
+
+        agregarTallerInicial(
+                3, "Taller Servicio Express",
+                "Zona 11, Ciudad de Guatemala",
+                "2222-1003", "express@example.com",
+                "Lunes a sábado de 8:00 a 18:00",
+                3, 15.0 / 3, 3, true
+        );
+
+        agregarTallerInicial(
+                4, "Taller Automotriz del Sur",
+                "Zona 2, Villa Nueva",
+                "2222-1004", "delsur@example.com",
+                "Lunes a viernes de 8:00 a 17:00",
+                4, 14.0 / 4, 4, false
+        );
+
+        agregarTallerInicial(
+                5, "Taller Ruta Segura",
+                "Zona 3, Mixco",
+                "2222-1005", "rutasegura@example.com",
+                "Lunes a sábado de 7:00 a 16:00",
+                5, 0.0, 0, true
+        );
+    }
+
+    private void agregarTallerInicial(
+            int id,
+            String nombre,
+            String direccion,
+            String telefono,
+            String correo,
+            String horario,
+            int empleadoId,
+            double promedio,
+            int cantidadValoraciones,
+            boolean activo) {
+
+        Empleado encargado = empleados.stream()
+                .filter(e -> e.getId() == empleadoId)
+                .findFirst()
+                .orElse(null);
+
+        if (encargado == null) {
+            System.err.println(
+                    "No se creó el taller de ejemplo "
+                            + nombre
+                            + ": falta el empleado con ID "
+                            + empleadoId
+            );
+            return;
+        }
 
         talleres.add(new Taller(
-            2,
-            "Taller El Motor",
-            "Zona 7, Ciudad de Guatemala",
-            "2222-1002",
-            "elmotor@example.com",
-            "Lunes a viernes de 7:00 a 18:00",
-            empleados.get(1),
-            16.0 / 4, 4, true
+                id, nombre, direccion, telefono, correo, horario,
+                encargado, promedio, cantidadValoraciones, activo
         ));
+    }
+    
+    private void cargarEmpleados() 
+    {
+        try {
+            try {
+                // Si existe, recuperamos los empleados guardados.
+                empleados = new ArrayList<>(
+                        empleadoRepositorio.cargar()
+                );
 
-        talleres.add(new Taller(
-            3,
-            "Taller Servicio Express",
-            "Zona 11, Ciudad de Guatemala",
-            "2222-1003",
-            "express@example.com",
-            "Lunes a sábado de 8:00 a 18:00",
-            empleados.get(2),
-            15.0 / 3, 3, true
-        ));
+            } catch (NoSuchFileException e) {
+                // Solo en la primera ejecución creamos los ejemplos.
+                iniciarEmpleados();
+                empleadoRepositorio.guardar(empleados);
+            }
 
-        talleres.add(new Taller(
-            4,
-            "Taller Automotriz del Sur",
-            "Zona 2, Villa Nueva",
-            "2222-1004",
-            "delsur@example.com",
-            "Lunes a viernes de 8:00 a 17:00",
-            empleados.get(3),
-            14.0 / 4, 4, false
-        ));
+            System.out.println(
+                    "Archivo de empleados: "
+                            + empleadoRepositorio.getArchivo()
+            );
 
-        talleres.add(new Taller(
-            5,
-            "Taller Ruta Segura",
-            "Zona 3, Mixco",
-            "2222-1005",
-            "rutasegura@example.com",
-            "Lunes a sábado de 7:00 a 16:00",
-            empleados.get(4),
-            0.0, 0, true
-        ));
+        } catch (IOException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los empleados.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de empleados.",
+                    e
+            );
+        }
+    }
+
+    public synchronized void agregarEmpleado(Empleado empleado)
+            throws IOException {
+
+        ArrayList<Empleado> nuevaLista =
+                new ArrayList<>(empleados);
+
+        nuevaLista.add(empleado);
+
+        // Primero guardamos. Si falla, la lista actual queda igual.
+        empleadoRepositorio.guardar(nuevaLista);
+
+        // Conservamos la misma lista utilizada por las ventanas.
+        empleados.clear();
+        empleados.addAll(nuevaLista);
+    }
+    
+    private void cargarTalleres() 
+    {
+        try {
+            try {
+                List<Taller> cargados =
+                        tallerRepositorio.cargar(empleados);
+
+                talleres.clear();
+                talleres.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                iniciarTalleres();
+                tallerRepositorio.guardar(talleres, empleados);
+            }
+
+            System.out.println(
+                    "Archivo de talleres: "
+                            + tallerRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los talleres.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de talleres.",
+                    e
+            );
+        }
+    }
+
+    public synchronized void agregarTaller(Taller taller)
+            throws IOException {
+
+        List<Taller> nuevaLista = new ArrayList<>(talleres);
+        nuevaLista.add(taller);
+
+        // Si el guardado falla, la lista actual queda igual.
+        tallerRepositorio.guardar(nuevaLista, empleados);
+
+        talleres.clear();
+        talleres.addAll(nuevaLista);
+    }
+    
+    private void cargarRepuestos() 
+    {
+        try {
+            try {
+                List<Repuesto> cargados =
+                        repuestoRepositorio.cargar();
+
+                repuestos.clear();
+                repuestos.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                iniciarRepuestos();
+                repuestoRepositorio.guardar(repuestos);
+            }
+
+            System.out.println(
+                    "Archivo de repuestos: "
+                            + repuestoRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los repuestos.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de repuestos.",
+                    e
+            );
+        }
+    }
+
+    public synchronized void agregarRepuesto(Repuesto repuesto)
+            throws IOException {
+
+        List<Repuesto> nuevaLista = new ArrayList<>(repuestos);
+        nuevaLista.add(repuesto);
+
+        repuestoRepositorio.guardar(nuevaLista);
+
+        repuestos.clear();
+        repuestos.addAll(nuevaLista);
+    }
+
+    public synchronized void venderRepuesto(
+            Repuesto repuesto, int cantidad) throws IOException {
+
+        int posicion = repuestos.indexOf(repuesto);
+
+        if (posicion < 0) {
+            throw new IllegalArgumentException(
+                    "El repuesto seleccionado ya no está disponible."
+            );
+        }
+
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException(
+                    "La cantidad debe ser mayor que cero."
+            );
+        }
+
+        if (cantidad > repuesto.getStock()) {
+            throw new IllegalArgumentException(
+                    "No hay suficientes unidades. Stock disponible: "
+                            + repuesto.getStock()
+            );
+        }
+
+        int nuevoStock = repuesto.getStock() - cantidad;
+
+        // Copiamos el repuesto para preparar el cambio
+        // sin modificar todavía el objeto que usan las ventanas.
+        Repuesto actualizado = new Repuesto(
+                repuesto.getNombre(),
+                repuesto.getMarca(),
+                repuesto.getDescripcion(),
+                repuesto.getPrecioVenta(),
+                nuevoStock
+        );
+
+        List<Repuesto> nuevaLista = new ArrayList<>(repuestos);
+        nuevaLista.set(posicion, actualizado);
+
+        repuestoRepositorio.guardar(nuevaLista);
+
+        // Solo actualizamos la memoria cuando el guardado terminó.
+        repuesto.setStock(nuevoStock);
     }
     
     

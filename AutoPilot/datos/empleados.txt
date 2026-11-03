@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nombre": "Carlos",
+    "apellido": "Pérez",
+    "telefono": "5555-1001",
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Ana",
+    "apellido": "López",
+    "telefono": "5555-1002",
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Luis",
+    "apellido": "García",
+    "telefono": "5555-1003",
+    "activo": true
+  },
+  {
+    "id": 4,
+    "nombre": "María",
+    "apellido": "Hernández",
+    "telefono": "5555-1004",
+    "activo": true
+  },
+  {
+    "id": 5,
+    "nombre": "José",
+    "apellido": "Ramírez",
+    "telefono": "5555-1005",
+    "activo": true
+  },
+  {
+    "id": 6,
+    "nombre": "Julia",
+    "apellido": "Marquez",
+    "telefono": "56398741",
+    "activo": true
+  }
+]

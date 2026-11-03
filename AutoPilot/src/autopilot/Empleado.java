@@ -24,6 +24,10 @@ public class Empleado {
         this.telefono = telefono;
         this.activo = activo;
     }
+    
+    public Empleado() {
+    // Para reconstruir los objetos al leer el JSON.
+    }
 
     public int getId() {
         return id;

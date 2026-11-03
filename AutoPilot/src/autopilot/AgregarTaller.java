@@ -327,25 +327,116 @@ public class AgregarTaller extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
 
-        int id = Integer.parseInt(idTxt.getText());
-        String nombre = nombreTxt.getText();
-        String direccion = direccionTxt.getText();
-        String telefono = telefonoTxt.getText();
-        String correo = correoTxt.getText();
-        String horario = horarioTxt.getText();
-        Empleado empleado = empleadoSeleccionado();
-        Integer rating = Integer.parseInt(ratingTxt.getText());
-        Integer cantidad = Integer.parseInt(cantidadTxt.getText());
-        boolean activo = "Si".equals(activoCombo.getSelectedItem());
-        
-        double promedio = rating / cantidad;
-        
-        datos.getTalleres().add(new Taller(id, nombre, direccion, telefono, correo,
-        horario, empleado, promedio, cantidad, activo));
-        
-        javax.swing.JOptionPane.showMessageDialog(
-                this, "Taller agregado correctamente!."
+        try {
+            int id = Integer.parseInt(idTxt.getText().trim());
+
+            String nombre = nombreTxt.getText().trim();
+            String direccion = direccionTxt.getText().trim();
+            String telefono = telefonoTxt.getText().trim();
+            String correo = correoTxt.getText().trim();
+            String horario = horarioTxt.getText().trim();
+
+            Empleado gerente = empleadoSeleccionado();
+
+            if (gerente == null) {
+                throw new IllegalArgumentException(
+                        "Debes seleccionar un gerente."
+                );
+            }
+
+            long ratingAcumulado =
+                    Long.parseLong(ratingTxt.getText().trim());
+
+            int cantidad =
+                    Integer.parseInt(cantidadTxt.getText().trim());
+
+            if (cantidad < 0 || ratingAcumulado < 0) {
+                throw new IllegalArgumentException(
+                        "Las reseñas y el rating acumulado "
+                                + "no pueden ser negativos."
+                );
+            }
+
+            double promedio;
+
+            if (cantidad == 0) {
+                if (ratingAcumulado != 0) {
+                    throw new IllegalArgumentException(
+                            "Sin reseñas, el rating acumulado debe ser 0."
+                    );
+                }
+
+                promedio = 0;
+
+            } else {
+                // Cada reseña debe valer entre 1 y 5.
+                if (ratingAcumulado < cantidad
+                        || ratingAcumulado > cantidad * 5L) {
+
+                    throw new IllegalArgumentException(
+                            "El rating acumulado debe estar entre "
+                                    + cantidad + " y " + (cantidad * 5L)
+                                    + " para esa cantidad de reseñas."
+                    );
+                }
+
+                promedio = (double) ratingAcumulado / cantidad;
+            }
+
+            boolean activo =
+                    "Si".equals(activoCombo.getSelectedItem());
+
+            Taller nuevo = new Taller(
+                    id, nombre, direccion, telefono, correo,
+                    horario, gerente, promedio, cantidad, activo
             );
+
+            datos.agregarTaller(nuevo);
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Taller agregado y guardado correctamente."
+            );
+
+            idTxt.setText("");
+            nombreTxt.setText("");
+            direccionTxt.setText("");
+            telefonoTxt.setText("");
+            correoTxt.setText("");
+            horarioTxt.setText("");
+            ratingTxt.setText("");
+            cantidadTxt.setText("");
+            gerenteCombo.setSelectedIndex(-1);
+            activoCombo.setSelectedIndex(0);
+
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "El ID, el rating acumulado y la cantidad "
+                            + "de reseñas deben ser números enteros válidos."
+            );
+
+        } catch (IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage()
+            );
+
+        } catch (java.io.IOException e) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al guardar el taller",
+                    e
+            );
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el taller.\n"
+                            + e.getMessage(),
+                    "Error de guardado",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
 
     }//GEN-LAST:event_jButton4ActionPerformed
 

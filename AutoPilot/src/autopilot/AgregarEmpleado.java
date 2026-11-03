@@ -224,17 +224,62 @@ public class AgregarEmpleado extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         
-        int id = Integer.parseInt(idTxt.getText());
-        String nombre = nombreTxt.getText();
-        String apellido = apellidoTxt.getText();
-        String telefono = telefonoTxt.getText();
-        boolean activo = "Si".equals(activoCombo.getSelectedItem());
-        
-        datos.getEmpleados().add(new Empleado(id,nombre,apellido,telefono,activo));
-        
-        javax.swing.JOptionPane.showMessageDialog(
-                this, "Empleado agregado correctamente!."
+        try 
+        {
+            int id = Integer.parseInt(idTxt.getText().trim());
+
+            String nombre = nombreTxt.getText().trim();
+            String apellido = apellidoTxt.getText().trim();
+            String telefono = telefonoTxt.getText().trim();
+
+            boolean activo =
+                    "Si".equals(activoCombo.getSelectedItem());
+
+            Empleado nuevo = new Empleado(
+                    id, nombre, apellido, telefono, activo
             );
+
+            datos.agregarEmpleado(nuevo);
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Empleado agregado y guardado correctamente."
+            );
+
+            idTxt.setText("");
+            nombreTxt.setText("");
+            apellidoTxt.setText("");
+            telefonoTxt.setText("");
+            activoCombo.setSelectedIndex(0);
+
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "El ID debe ser un número entero válido."
+            );
+
+        } catch (IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage()
+            );
+
+        } catch (java.io.IOException e) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al guardar el empleado",
+                    e
+            );
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el empleado.\n"
+                            + e.getMessage(),
+                    "Error de guardado",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+        
         
     }//GEN-LAST:event_jButton3ActionPerformed
 

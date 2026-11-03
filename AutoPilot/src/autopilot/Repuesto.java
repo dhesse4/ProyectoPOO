@@ -24,7 +24,11 @@ public class Repuesto
         this.precioVenta = precioVenta;
         this.stock = stock;
     }
-
+    
+    public Repuesto() {
+    // Para reconstruir el objeto desde el archivo JSON.
+    }
+    
     public String getNombre() {
         return nombre;
     }

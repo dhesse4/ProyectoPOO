@@ -6,7 +6,7 @@ package autopilot;
 
 /**
  *
- * @author Dell
+ * @author Maria Cajas
  */
 public class Seguros {
     private String aseguradora;
