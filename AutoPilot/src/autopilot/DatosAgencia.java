@@ -30,7 +30,7 @@ public class DatosAgencia
     private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
     private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
     private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
-
+    private final List<Anuncio> anuncios;
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() 
     {
@@ -39,11 +39,11 @@ public class DatosAgencia
         seguros = new ArrayList<>();
         talleres = new ArrayList<>();
         empleados = new ArrayList<>();
+        anuncios = new ArrayList<>();
         
         cargarRepuestos();
         iniciarSeguros();
         iniciarVehiculos();
-
         cargarEmpleados();
         cargarTalleres();
     }
@@ -546,5 +546,8 @@ public class DatosAgencia
     public List <Empleado> getEmpleados()
     {
         return empleados;
+    }
+    public List<Anuncio> getAnuncios() {
+    return anuncios;
     }
 }
