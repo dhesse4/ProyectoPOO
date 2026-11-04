@@ -25,14 +25,23 @@ public class DatosAgencia
     
     private final List<Taller> talleres;
     
+    private final List<Usuario> usuarios;
+    
     private ArrayList<Empleado> empleados;
+    
+    private final List<Anuncio> anuncios;
     
     private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
     private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
     private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
     private final SeguroRepositorio seguroRepositorio = new SeguroRepositorio();
     private final VehiculoRepositorio vehiculoRepositorio = new VehiculoRepositorio();
-    private final List<Anuncio> anuncios;
+    private final UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
+    
+    private final AnuncioRepositorio anuncioRepositorio = new AnuncioRepositorio();
+    
+    private Usuario usuarioActual;
+    
     // Privado para que ninguna ventana cree otra instancia.
     private DatosAgencia() 
     {
@@ -42,12 +51,17 @@ public class DatosAgencia
         talleres = new ArrayList<>();
         empleados = new ArrayList<>();
         anuncios = new ArrayList<>();
+        usuarios = new ArrayList<>();
+        
+        usuarioActual = null;
         
         cargarRepuestos();
         cargarSeguros();
         cargarVehiculos();
         cargarEmpleados();
         cargarTalleres();
+        cargarUsuarios();
+        cargarAnuncios();
     }
     
     private void iniciarRepuestos()
@@ -640,6 +654,154 @@ public class DatosAgencia
         vehiculos.addAll(nuevaLista);
     }
     
+    private void cargarUsuarios() 
+    {
+        try {
+            try {
+                List<Usuario> cargados =
+                        usuarioRepositorio.cargar();
+
+                usuarios.clear();
+                usuarios.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                usuarioRepositorio.guardar(usuarios);
+            }
+
+            System.out.println(
+                    "Archivo de usuarios: "
+                            + usuarioRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los usuarios.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de usuarios.",
+                    e
+            );
+        }
+    }
+
+    public synchronized Usuario buscarUsuario(String nombreUsuario) {
+        if (nombreUsuario == null) {
+            return null;
+        }
+
+        String buscado = nombreUsuario.trim();
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsuario().equalsIgnoreCase(buscado)) {
+                return usuario;
+            }
+        }
+
+        return null;
+    }
+
+    public synchronized boolean usuarioExiste(String nombreUsuario) {
+        return buscarUsuario(nombreUsuario) != null;
+    }
+
+    public synchronized List<Usuario> getUsuarios() {
+        // Evita que una ventana agregue usuarios sin guardarlos.
+        return List.copyOf(usuarios);
+    }
+
+    public synchronized void registrarUsuario(Usuario nuevo)
+            throws IOException {
+
+        if (nuevo == null) {
+            throw new IllegalArgumentException(
+                    "Debes proporcionar un usuario."
+            );
+        }
+
+        nuevo.validarDatos();
+
+        if (nuevo.getAdmin()) {
+            throw new IllegalArgumentException(
+                    "El registro público no permite crear administradores."
+            );
+        }
+
+        if (usuarioExiste(nuevo.getUsuario())) {
+            throw new IllegalArgumentException(
+                    "El nombre de usuario ya existe."
+            );
+        }
+
+        List<Usuario> nuevaLista = new ArrayList<>(usuarios);
+        nuevaLista.add(nuevo);
+
+        usuarioRepositorio.guardar(nuevaLista);
+
+        usuarios.clear();
+        usuarios.addAll(nuevaLista);
+    }
+    
+    private void cargarAnuncios() {
+        try {
+            try {
+                List<Anuncio> cargados =
+                        anuncioRepositorio.cargar();
+
+                anuncios.clear();
+                anuncios.addAll(cargados);
+
+            } catch (NoSuchFileException e) {
+                // La primera ejecución empieza sin anuncios.
+                anuncioRepositorio.guardar(anuncios);
+            }
+
+            System.out.println(
+                    "Archivo de anuncios: "
+                            + anuncioRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar los anuncios.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar la información de anuncios.",
+                    e
+            );
+        }
+    }
+
+    public synchronized List<Anuncio> getAnuncios() {
+        return List.copyOf(anuncios);
+    }
+
+    public synchronized void agregarAnuncio(Anuncio anuncio)
+            throws IOException {
+
+        List<Anuncio> nuevaLista = new ArrayList<>(anuncios);
+        nuevaLista.add(anuncio);
+
+        anuncioRepositorio.guardar(nuevaLista);
+
+        anuncios.clear();
+        anuncios.addAll(nuevaLista);
+    }
+    
+    
     public static DatosAgencia getInstancia() {
         return INSTANCIA;
     }
@@ -666,7 +828,15 @@ public class DatosAgencia
     {
         return empleados;
     }
-    public List<Anuncio> getAnuncios() {
-    return anuncios;
+
+    
+    public void setUsuarioActual(Usuario usuario)
+    {
+        this.usuarioActual = usuario;
+    }
+    
+    public Usuario getUsuarioActual()
+    {
+        return this.usuarioActual;
     }
 }

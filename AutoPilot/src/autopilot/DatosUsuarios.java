@@ -4,22 +4,17 @@
  */
 package autopilot;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author María Cajas
  */
-public class DatosUsuarios {
-    public static ArrayList<Usuario> usuarios = new ArrayList<>();
+public final class DatosUsuarios {
+    
+    private DatosUsuarios() {}
 
-    public static boolean usuarioExiste(String nombreUsuario) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getUsuario().equalsIgnoreCase(nombreUsuario)) {
-                return true;
-            }
-        }
-
-        return false;
+    public static boolean usuarioExiste(String nombreUsuario) 
+    {
+        return DatosAgencia.getInstancia().usuarioExiste(nombreUsuario);
     }
+
 }

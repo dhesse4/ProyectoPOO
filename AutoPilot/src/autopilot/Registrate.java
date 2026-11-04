@@ -213,10 +213,11 @@ public class Registrate extends javax.swing.JFrame {
         Usuario nuevoUsuario = new Usuario(
                 nombre,
                 usuario,
-                contrasena
+                contrasena,
+                false
         );
 
-        DatosUsuarios.usuarios.add(nuevoUsuario);
+        DatosAgencia.getInstancia().registrarUsuario(nuevoUsuario);
 
         javax.swing.JOptionPane.showMessageDialog(
                 this,
@@ -235,7 +236,45 @@ public class Registrate extends javax.swing.JFrame {
                 "Error de registro",
                 javax.swing.JOptionPane.ERROR_MESSAGE
         );
-    }
+    } catch (IllegalArgumentException error) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    error.getMessage(),
+                    "Error de registro",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+        } catch (java.io.IOException error) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al guardar el usuario",
+                    error
+            );
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo guardar el usuario.\n"
+                            + "El registro no fue completado.",
+                    "Error de guardado",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+        } catch (IllegalStateException error) {
+            logger.log(
+                    java.util.logging.Level.SEVERE,
+                    "Error al procesar la contraseña",
+                    error
+            );
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo procesar la contraseña. "
+                            + "El registro no fue completado.",
+                    "Error de registro",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+        
 
     }//GEN-LAST:event_RegistroActionPerformed
 

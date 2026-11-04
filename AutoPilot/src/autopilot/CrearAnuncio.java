@@ -189,63 +189,93 @@ public class CrearAnuncio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String tipo = jComboBox1.getSelectedItem().toString();
+        try {
+        DatosAgencia datos = DatosAgencia.getInstancia();
+
+        Usuario actual = datos.getUsuarioActual();
+
+        if (actual == null) {
+            throw new IllegalArgumentException(
+                    "Debes iniciar sesión para publicar un anuncio."
+            );
+        }
+
+        String tipo = (String) jComboBox1.getSelectedItem();
         String titulo = jTextField1.getText().trim();
         String precioTexto = jTextField2.getText().trim();
         String descripcion = jTextArea1.getText().trim();
 
         if (titulo.isEmpty() && descripcion.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "Escribe un título o una descripción para el anuncio."
+            throw new IllegalArgumentException(
+                    "Escribe un título o una descripción "
+                            + "para el anuncio."
             );
-            return;
         }
 
         Double precio = null;
 
         if (!precioTexto.isEmpty()) {
-            try {
-                precio = Double.valueOf(precioTexto.replace(",", "."));
+            precio = Double.valueOf(
+                    precioTexto.replace(",", ".")
+            );
 
-                if (precio <= 0) {
-                    javax.swing.JOptionPane.showMessageDialog(
-                        this,
-                        "Si escribes un precio, debe ser mayor que cero."
-                    );
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Escribe un precio válido, por ejemplo: 45000."
+            if (!Double.isFinite(precio) || precio <= 0) {
+                throw new IllegalArgumentException(
+                        "Si escribes un precio, debe ser "
+                                + "un número finito mayor que cero."
                 );
-                return;
             }
         }
 
         if (titulo.isEmpty()) {
             titulo = "Anuncio";
         }
-        
-        String usuario = "María";
 
-        Anuncio nuevo = new Anuncio(tipo, titulo, precio, descripcion,usuario);
-        DatosAgencia.getInstancia().getAnuncios().add(nuevo);
-        
-         new VerAnuncios().setVisible(true);
-         dispose();
-
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "El anuncio se publicó correctamente."
+        Anuncio nuevo = new Anuncio(
+                tipo,
+                titulo,
+                precio,
+                descripcion,
+                actual.getNombre()
         );
 
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jTextArea1.setText("");
-        jComboBox1.setSelectedIndex(0);
-        
+        datos.agregarAnuncio(nuevo);
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "El anuncio se publicó y guardó correctamente."
+        );
+
+        new VerAnuncios().setVisible(true);
+        dispose();
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Escribe un precio válido, por ejemplo: 45000.50"
+        );
+
+    } catch (IllegalArgumentException e) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                e.getMessage()
+        );
+
+    } catch (java.io.IOException e) {
+        logger.log(
+                java.util.logging.Level.SEVERE,
+                "Error al guardar el anuncio",
+                e
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No se pudo guardar el anuncio.\n"
+                        + "La publicación no fue completada.",
+                "Error de guardado",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

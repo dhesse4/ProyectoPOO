@@ -1,0 +1,10 @@
+[
+  {
+    "nombre": "Daniel Hesse",
+    "usuario": "Dhesse4",
+    "hashContrasena": "akF4Z0h5t/tcjZUWw8qW5ibX8wvb/tfcvDZ6kohfZhI\u003d",
+    "sal": "rXgsZTtXSCNCYNAeP50Ftg\u003d\u003d",
+    "iteraciones": 600000,
+    "admin": false
+  }
+]

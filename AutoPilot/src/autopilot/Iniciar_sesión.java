@@ -165,14 +165,7 @@ public class Iniciar_sesión extends javax.swing.JFrame {
             );
         }
 
-        Usuario usuarioEncontrado = null;
-
-        for (Usuario usuario : DatosUsuarios.usuarios) {
-            if (usuario.getUsuario().equalsIgnoreCase(usuarioIngresado)) {
-                usuarioEncontrado = usuario;
-                break;
-            }
-        }
+        Usuario usuarioEncontrado = DatosAgencia.getInstancia().buscarUsuario(usuarioIngresado);
 
         if (usuarioEncontrado == null) {
             throw new UsuarioNoRegistradoException(
@@ -180,9 +173,8 @@ public class Iniciar_sesión extends javax.swing.JFrame {
             );
         }
 
-        if (!usuarioEncontrado.getContrasena()
-                .equals(contrasenaIngresada)) {
-
+        if (!usuarioEncontrado.verificarContrasena(contrasenaIngresada)) 
+        {
             throw new ContraseñaIncorrectaException(
                     "La contraseña es incorrecta."
             );
@@ -195,6 +187,9 @@ public class Iniciar_sesión extends javax.swing.JFrame {
                 javax.swing.JOptionPane.INFORMATION_MESSAGE
         );
         
+        
+        DatosAgencia.getInstancia().setUsuarioActual(usuarioEncontrado);
+        
         Menu menu = new Menu();
         menu.setVisible(true);
         menu.setLocationRelativeTo(null);
@@ -206,6 +201,20 @@ public class Iniciar_sesión extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(
                 this,
                 error.getMessage(),
+                "Error al iniciar sesión",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }catch (IllegalStateException error) 
+    {
+        logger.log(
+                java.util.logging.Level.SEVERE,
+                "Error al verificar la contraseña",
+                error
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No se pudo verificar la contraseña.",
                 "Error al iniciar sesión",
                 javax.swing.JOptionPane.ERROR_MESSAGE
         );

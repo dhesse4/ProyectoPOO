@@ -1,0 +1,10 @@
+[
+  {
+    "tipo": "Vehículo",
+    "titulo": "Nuevo Vehiculo de Moda!!",
+    "precio": 50000.0,
+    "descripcion": "Un nuevo vehiculo ha llamado la atención de posibles compradores: El Tesla Roadster",
+    "usuario": "Daniel Hesse",
+    "comentarios": []
+  }
+]
