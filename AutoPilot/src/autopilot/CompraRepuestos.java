@@ -252,12 +252,21 @@ public class CompraRepuestos extends javax.swing.JFrame {
 
             // Vuelve a validar el stock y guarda antes de modificarlo.
             datos.venderRepuesto(repuesto, cantidad);
+            
+            Usuario comprador = datos.getUsuarioActual();
 
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Venta realizada y guardada correctamente.\n"
-                            + "Stock restante: " + repuesto.getStock()
-            );
+Factura factura = new Factura(
+        comprador.getNombre(),
+        comprador.getUsuario(),
+        "Repuesto: " + repuesto.getNombre()
+                + " - " + repuesto.getMarca(),
+        cantidad,
+        repuesto.getPrecioVenta()
+);
+
+datos.agregarFactura(factura);
+
+            new VerFactura(factura).setVisible(true);
 
             txtCantidad.setText("");
             actualizarOpcionesRepuestos();

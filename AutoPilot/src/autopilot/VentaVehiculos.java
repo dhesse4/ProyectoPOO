@@ -325,6 +325,20 @@ public class VentaVehiculos extends javax.swing.JFrame {
         {
             try {
                 datos.venderVehiculo(vehiculoAdquirido);
+                
+                Usuario comprador = datos.getUsuarioActual();
+
+                Factura factura = new Factura(
+                        comprador.getNombre(),
+                        comprador.getUsuario(),
+                        "Vehículo: " + vehiculoAdquirido.getMarca()
+                                + " " + vehiculoAdquirido.getModelo()
+                                + " - Placa: " + vehiculoAdquirido.getPlaca(),
+                        1,
+                        vehiculoAdquirido.getPrecio()
+                );
+
+                datos.agregarFactura(factura);
 
                 actualizarOpcionesVehiculos();
 
@@ -334,11 +348,7 @@ public class VentaVehiculos extends javax.swing.JFrame {
 
                 modelo.setRowCount(0);
 
-                javax.swing.JOptionPane.showMessageDialog(
-                        this,
-                        "¡Gracias por tu compra! "
-                                + "La operación quedó guardada."
-                );
+                new VerFactura(factura).setVisible(true);
 
             } catch (IllegalArgumentException e) {
                 javax.swing.JOptionPane.showMessageDialog(

@@ -31,6 +31,8 @@ public class DatosAgencia
     
     private final List<Anuncio> anuncios;
     
+    private final List<Factura> facturas;
+    
     private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
     private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
     private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
@@ -52,6 +54,7 @@ public class DatosAgencia
         empleados = new ArrayList<>();
         anuncios = new ArrayList<>();
         usuarios = new ArrayList<>();
+        facturas = new ArrayList<>();
         
         usuarioActual = null;
         
@@ -800,6 +803,20 @@ public class DatosAgencia
         anuncios.clear();
         anuncios.addAll(nuevaLista);
     }
+    
+    public synchronized void agregarFactura(Factura factura) {
+    if (factura == null) {
+        throw new IllegalArgumentException(
+                "La factura no puede ser nula."
+        );
+    }
+
+    facturas.add(factura);
+}
+
+public synchronized List<Factura> getFacturas() {
+    return List.copyOf(facturas);
+}
     
     
     public static DatosAgencia getInstancia() {
