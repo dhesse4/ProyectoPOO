@@ -5,20 +5,9 @@
         <group>
             <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Menu.java</file>
             <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Anuncio.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/DatosUsuarios.java</file>
             <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/CentroControl.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/DatosAgencia.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/VerFactura.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Usuario.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Seguros.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/Factura.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/FacturaPDF.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/FacturaRepositorio.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/VentaVehiculos.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/CompraRepuestos.java</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/datos/facturas.txt</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/datos/usuarios.txt</file>
-            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/AgregarTaller.java</file>
+            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/RegistroFacturas.java</file>
+            <file>file:/C:/Users/Daniel%20Hesse/Documents/ProyectosPOO/ProyectoPOO/AutoPilot/src/autopilot/InicioAnuncios.java</file>
         </group>
     </open-files>
 </project-private>
