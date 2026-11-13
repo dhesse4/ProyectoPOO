@@ -5,6 +5,22 @@
     "hashContrasena": "akF4Z0h5t/tcjZUWw8qW5ibX8wvb/tfcvDZ6kohfZhI\u003d",
     "sal": "rXgsZTtXSCNCYNAeP50Ftg\u003d\u003d",
     "iteraciones": 600000,
+    "admin": true
+  },
+  {
+    "nombre": "Maria Cajas",
+    "usuario": "ImCajitas007",
+    "hashContrasena": "utbnXSUUPnVNo4+rPGbr7/NRir6nQ9VpxKGEtTz42Bo\u003d",
+    "sal": "Ocy8vGB58nGdZysDwBg7bA\u003d\u003d",
+    "iteraciones": 600000,
+    "admin": false
+  },
+  {
+    "nombre": "Luis Perez",
+    "usuario": "LPerez45",
+    "hashContrasena": "K1qPKIR4o4DE3quvkvPnAdkbVT/X+bcwV92fO/2ZQco\u003d",
+    "sal": "BziA3KEyu0TzNM8CZxZR0w\u003d\u003d",
+    "iteraciones": 600000,
     "admin": false
   }
 ]

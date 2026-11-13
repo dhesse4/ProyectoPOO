@@ -40,19 +40,6 @@
   },
   {
     "clase": "AUTOMOVIL",
-    "marca": "Kia",
-    "modelo": "Sportage",
-    "placa": "P-234JKL",
-    "motor": "2.0 L",
-    "deAgencia": true,
-    "precio": 210000.0,
-    "ultimoMantenimiento": "2026-09-05",
-    "proximoMantenimiento": "2027-03-05",
-    "automatico": true,
-    "electrico": false
-  },
-  {
-    "clase": "AUTOMOVIL",
     "marca": "Mazda",
     "modelo": "Mazda 3",
     "placa": "P-567MNO",

@@ -51,4 +51,10 @@ public class Anuncio {
     public java.util.ArrayList<String> getComentarios() {
         return comentarios;
     }
+    
+    @Override
+    public String toString()
+    {
+        return this.usuario + ": " + this.titulo;
+    }
 }

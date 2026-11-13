@@ -4,14 +4,14 @@
     "marca": "Bosch",
     "descripcion": "Filtro de aceite para motor",
     "precioVenta": 85.0,
-    "stock": 20
+    "stock": 19
   },
   {
     "nombre": "Filtro de aire",
     "marca": "Mann",
     "descripcion": "Filtro de aire para motor",
     "precioVenta": 120.0,
-    "stock": 15
+    "stock": 13
   },
   {
     "nombre": "Pastillas de freno",
@@ -60,7 +60,7 @@
     "marca": "Denso",
     "descripcion": "Radiador del sistema de refrigeración",
     "precioVenta": 1250.0,
-    "stock": 5
+    "stock": 7
   },
   {
     "nombre": "Alternador",
@@ -74,6 +74,6 @@
     "marca": "KIA",
     "descripcion": "Luces de buena calidad",
     "precioVenta": 1500.0,
-    "stock": 7
+    "stock": 3
   }
 ]

@@ -22,39 +22,100 @@ public class Factura {
     private final double total;
     private final String cliente;
     
-    public Factura (String cliente,String usuario, String descripcion, int cantidad, double precioUnitario ){
+    public Factura(
+            String cliente,
+            String usuario,
+            String descripcion,
+            int cantidad,
+            double precioUnitario) {
+
+        this(
+                "FAC-" + UUID.randomUUID()
+                        .toString()
+                        .substring(0, 8)
+                        .toUpperCase(java.util.Locale.ROOT),
+
+                LocalDateTime.now().format(
+                        DateTimeFormatter.ofPattern(
+                                "dd/MM/uuuu HH:mm"
+                        )
+                ),
+
+                cliente,
+                usuario,
+                descripcion,
+                cantidad,
+                precioUnitario,
+                cantidad * precioUnitario
+        );
+    }
+
+    // Para recuperar una factura con su número y fecha originales.
+    // Es accesible desde el repositorio, dentro de autopilot.
+    Factura(
+            String numero,
+            String fecha,
+            String cliente,
+            String usuario,
+            String descripcion,
+            int cantidad,
+            double precioUnitario,
+            double total) {
+
+        if (numero == null || numero.isBlank()
+                || fecha == null || fecha.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "La factura necesita número y fecha."
+            );
+        }
+
         if (usuario == null || usuario.isBlank()) {
             throw new IllegalArgumentException(
                     "La factura necesita el nombre del usuario."
             );
-        }  if (descripcion == null || descripcion.isBlank()) {
+        }
+
+        if (descripcion == null || descripcion.isBlank()) {
             throw new IllegalArgumentException(
                     "La factura necesita la descripción del producto."
             );
         }
-        
-        if (cantidad <= 0 || precioUnitario < 0
-                || !Double.isFinite(precioUnitario)) {
+
+        if (cantidad <= 0
+                || precioUnitario < 0
+                || !Double.isFinite(precioUnitario)
+                || !Double.isFinite(total)) {
+
             throw new IllegalArgumentException(
-                    "La cantidad o el precio no son válidos."
+                    "La cantidad, el precio o el total no son válidos."
             );
         }
 
-        this.numero = "FAC-" + UUID.randomUUID()
-                .toString()
-                .substring(0, 8)
-                .toUpperCase();
+        if (Double.compare(
+                total, cantidad * precioUnitario) != 0) {
 
-        this.fecha = LocalDateTime.now().format(
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+            throw new IllegalArgumentException(
+                    "El total no coincide con cantidad por precio."
+            );
+        }
+
+        LocalDateTime.parse(
+                fecha,
+                DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm")
+                        .withResolverStyle(
+                                java.time.format.ResolverStyle.STRICT
+                        )
         );
 
+        this.numero = numero;
+        this.fecha = fecha;
+        this.cliente = cliente;
         this.usuario = usuario;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.total = cantidad * precioUnitario;
-        this.cliente = cliente;
+        this.total = total;
     }
 
     public String getNumero() {
@@ -85,8 +146,15 @@ public class Factura {
         return total;
     }
     
-    public String getCliente() {
-    return cliente;
-}
+    public String getCliente() 
+    {
+        return cliente;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Factura no. " + this.numero;
+    }
 }
 

@@ -68,4 +68,10 @@ public class Seguros {
         }
         return valor.trim();
     }
+    
+    @Override
+    public String toString()
+    {
+        return this.aseguradora + "  -  " + this.tipo;
+    }
 }

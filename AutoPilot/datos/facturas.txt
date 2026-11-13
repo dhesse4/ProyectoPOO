@@ -1,0 +1,22 @@
+[
+  {
+    "numero": "FAC-F837828D",
+    "fecha": "12/11/2026 12:22",
+    "usuario": "Dhesse4",
+    "descripcion": "Repuesto: Filtro de aire - Mann",
+    "cantidad": 1,
+    "precioUnitario": 120.0,
+    "total": 120.0,
+    "cliente": "Daniel Hesse"
+  },
+  {
+    "numero": "FAC-E6554F46",
+    "fecha": "12/11/2026 19:31",
+    "usuario": "Dhesse4",
+    "descripcion": "Repuesto: Filtro de aceite - Bosch",
+    "cantidad": 1,
+    "precioUnitario": 85.0,
+    "total": 85.0,
+    "cliente": "Daniel Hesse"
+  }
+]

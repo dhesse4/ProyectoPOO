@@ -321,14 +321,24 @@ public class VentaVehiculos extends javax.swing.JFrame {
             javax.swing.JOptionPane.QUESTION_MESSAGE
         );
         
-        if (respuesta == javax.swing.JOptionPane.YES_OPTION) 
-        {
-            try {
-                datos.venderVehiculo(vehiculoAdquirido);
-                
-                Usuario comprador = datos.getUsuarioActual();
+       if (respuesta == javax.swing.JOptionPane.YES_OPTION) 
+       {
 
-                Factura factura = new Factura(
+            Usuario comprador = datos.getUsuarioActual();
+
+            if (comprador == null) {
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Debes iniciar sesión para completar la compra."
+                );
+                return;
+            }
+
+            Factura factura;
+
+            // Primero validamos la factura y procesamos la venta.
+            try {
+                factura = new Factura(
                         comprador.getNombre(),
                         comprador.getUsuario(),
                         "Vehículo: " + vehiculoAdquirido.getMarca()
@@ -338,23 +348,14 @@ public class VentaVehiculos extends javax.swing.JFrame {
                         vehiculoAdquirido.getPrecio()
                 );
 
-                datos.agregarFactura(factura);
-
-                actualizarOpcionesVehiculos();
-
-                javax.swing.table.DefaultTableModel modelo =
-                        (javax.swing.table.DefaultTableModel)
-                                tablaVehiculo.getModel();
-
-                modelo.setRowCount(0);
-
-                new VerFactura(factura).setVisible(true);
+                datos.venderVehiculo(vehiculoAdquirido);
 
             } catch (IllegalArgumentException e) {
                 javax.swing.JOptionPane.showMessageDialog(
                         this,
                         e.getMessage()
                 );
+                return;
 
             } catch (java.io.IOException e) {
                 logger.log(
@@ -365,13 +366,48 @@ public class VentaVehiculos extends javax.swing.JFrame {
 
                 javax.swing.JOptionPane.showMessageDialog(
                         this,
-                        "No se pudo guardar la venta.\n"
-                                + "El vehículo sigue en el catálogo.\n"
+                        "No se pudo completar el guardado de la venta.\n"
                                 + e.getMessage(),
                         "Error de guardado",
                         javax.swing.JOptionPane.ERROR_MESSAGE
                 );
+                return;
             }
+
+            // La venta ya está registrada. Ahora guardamos la factura.
+            try {
+                datos.registrarFactura(factura);
+
+            } catch (java.io.IOException | IllegalArgumentException e) {
+                logger.log(
+                        java.util.logging.Level.SEVERE,
+                        "Error al registrar la factura "
+                                + factura.getNumero(),
+                        e
+                );
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "La venta se guardó, pero no se pudo "
+                                + "registrar esta factura.\n"
+                                + "Número: " + factura.getNumero()
+                                + "\n" + e.getMessage(),
+                        "Error al registrar la factura",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+            actualizarOpcionesVehiculos();
+
+            javax.swing.table.DefaultTableModel modelo =
+                    (javax.swing.table.DefaultTableModel)
+                            tablaVehiculo.getModel();
+
+            modelo.setRowCount(0);
+
+            new VerFactura(factura).setVisible(true);
+            
+            this.dispose();
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

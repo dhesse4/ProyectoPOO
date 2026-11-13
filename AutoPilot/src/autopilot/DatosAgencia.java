@@ -32,7 +32,8 @@ public class DatosAgencia
     private final List<Anuncio> anuncios;
     
     private final List<Factura> facturas;
-    
+
+    private final FacturaRepositorio facturaRepositorio = new FacturaRepositorio();
     private final EmpleadoRepositorio empleadoRepositorio = new EmpleadoRepositorio();
     private final TallerRepositorio tallerRepositorio = new TallerRepositorio();
     private final RepuestoRepositorio repuestoRepositorio = new RepuestoRepositorio();
@@ -65,6 +66,7 @@ public class DatosAgencia
         cargarTalleres();
         cargarUsuarios();
         cargarAnuncios();
+        cargarFacturas();
     }
     
     private void iniciarRepuestos()
@@ -805,19 +807,219 @@ public class DatosAgencia
     }
     
     public synchronized void agregarFactura(Factura factura) {
-    if (factura == null) {
-        throw new IllegalArgumentException(
-                "La factura no puede ser nula."
-        );
+        if (factura == null) {
+            throw new IllegalArgumentException(
+                    "La factura no puede ser nula."
+            );
+        }
+
+        facturas.add(factura);
     }
 
-    facturas.add(factura);
-}
+    public synchronized List<Factura> getFacturas() {
+        return List.copyOf(facturas);
+    }
 
-public synchronized List<Factura> getFacturas() {
-    return List.copyOf(facturas);
-}
+    private void cargarFacturas() {
+        try {
+            try {
+                List<Factura> cargadas =
+                        facturaRepositorio.cargar();
+
+                facturas.clear();
+                facturas.addAll(cargadas);
+
+            } catch (NoSuchFileException e) {
+                // Primera ejecución: historial vacío.
+                facturaRepositorio.guardar(facturas);
+            }
+
+            System.out.println(
+                    "Archivo de facturas: "
+                            + facturaRepositorio.getArchivo()
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No se pudieron cargar o inicializar las facturas.\n"
+                            + e.getMessage()
+                            + "\nSe detendrá la inicialización "
+                            + "para evitar sobrescribir los datos.",
+                    "Error de persistencia",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            throw new IllegalStateException(
+                    "No se pudo inicializar el historial de facturas.",
+                    e
+            );
+        }
+    }
+    public synchronized void registrarFactura(Factura factura)
+            throws IOException {
+
+        List<Factura> nuevaLista = new ArrayList<>(facturas);
+        nuevaLista.add(factura);
+
+        facturaRepositorio.guardar(nuevaLista);
+
+        facturas.clear();
+        facturas.addAll(nuevaLista);
+    }
     
+    public synchronized void verificarAccesoAdministrador() {
+        if (usuarioActual == null
+                || !usuarios.contains(usuarioActual)
+                || !usuarioActual.getAdmin()) {
+
+            throw new SecurityException(
+                    "Necesitas una sesión de administrador."
+            );
+        }
+    }
+
+    private <T> List<T> copiaSinObjeto(List<T> lista, T objeto) {
+        List<T> copia = new ArrayList<>(lista);
+
+        if (objeto == null || !copia.remove(objeto)) {
+            throw new IllegalArgumentException(
+                    "El objeto seleccionado ya no está disponible."
+            );
+        }
+
+        return copia;
+    }
+
+    public synchronized void eliminarAnuncio(Anuncio anuncio)
+            throws IOException {
+
+        verificarAccesoAdministrador();
+
+        List<Anuncio> nuevaLista =
+                copiaSinObjeto(anuncios, anuncio);
+
+        anuncioRepositorio.guardar(nuevaLista);
+
+        anuncios.clear();
+        anuncios.addAll(nuevaLista);
+    }
+
+    public synchronized void eliminarTaller(Taller taller)
+            throws IOException {
+
+        verificarAccesoAdministrador();
+
+        List<Taller> nuevaLista =
+                copiaSinObjeto(talleres, taller);
+
+        tallerRepositorio.guardar(nuevaLista, empleados);
+
+        talleres.clear();
+        talleres.addAll(nuevaLista);
+    }
+
+    public synchronized void eliminarSeguro(Seguros seguro)
+            throws IOException {
+
+        verificarAccesoAdministrador();
+
+        List<Seguros> nuevaLista =
+                copiaSinObjeto(seguros, seguro);
+
+        seguroRepositorio.guardar(nuevaLista);
+
+        seguros.clear();
+        seguros.addAll(nuevaLista);
+    }
+
+    public synchronized void actualizarStockRepuesto(
+            Repuesto repuesto, int nuevoStock) throws IOException {
+
+        verificarAccesoAdministrador();
+
+        int posicion = repuestos.indexOf(repuesto);
+
+        if (posicion < 0) {
+            throw new IllegalArgumentException(
+                    "El repuesto ya no está disponible."
+            );
+        }
+
+        if (nuevoStock < 0) {
+            throw new IllegalArgumentException(
+                    "El stock no puede ser negativo."
+            );
+        }
+
+        Repuesto actualizado = new Repuesto(
+                repuesto.getNombre(),
+                repuesto.getMarca(),
+                repuesto.getDescripcion(),
+                repuesto.getPrecioVenta(),
+                nuevoStock
+        );
+
+        List<Repuesto> nuevaLista = new ArrayList<>(repuestos);
+        nuevaLista.set(posicion, actualizado);
+
+        repuestoRepositorio.guardar(nuevaLista);
+
+        // Conservamos el objeto que utilizan las otras ventanas.
+        repuesto.setStock(nuevoStock);
+    }
+
+    public synchronized void cambiarPermisoUsuario(
+            Usuario seleccionado, boolean nuevoPermiso)
+            throws IOException {
+
+        verificarAccesoAdministrador();
+
+        int posicion = usuarios.indexOf(seleccionado);
+
+        if (posicion < 0) {
+            throw new IllegalArgumentException(
+                    "El usuario ya no está disponible. Vuelve a consultar."
+            );
+        }
+
+        if (seleccionado.getAdmin() == nuevoPermiso) {
+            return;
+        }
+
+        if (!nuevoPermiso) {
+            long administradores = usuarios.stream()
+                    .filter(Usuario::getAdmin)
+                    .count();
+
+            if (administradores <= 1) {
+                throw new IllegalArgumentException(
+                        "No puedes quitar el permiso "
+                                + "al último administrador."
+                );
+            }
+
+            if (seleccionado.getUsuario().equalsIgnoreCase(
+                    usuarioActual.getUsuario())) {
+
+                throw new IllegalArgumentException(
+                        "No puedes quitar tu propio permiso "
+                                + "desde esta ventana."
+                );
+            }
+        }
+
+        Usuario actualizado =
+                seleccionado.copiarConPermiso(nuevoPermiso);
+
+        List<Usuario> nuevaLista = new ArrayList<>(usuarios);
+        nuevaLista.set(posicion, actualizado);
+
+        usuarioRepositorio.guardar(nuevaLista);
+
+        usuarios.clear();
+        usuarios.addAll(nuevaLista);
+    }
     
     public static DatosAgencia getInstancia() {
         return INSTANCIA;

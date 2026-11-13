@@ -71,6 +71,21 @@ public class Usuario
                         derivar(contrasena, salAleatoria, iteraciones)
                 );
     }
+    
+    Usuario copiarConPermiso(boolean nuevoPermiso) 
+    {
+        Usuario copia = new Usuario();
+
+        copia.nombre = this.nombre;
+        copia.usuario = this.usuario;
+        copia.hashContrasena = this.hashContrasena;
+        copia.sal = this.sal;
+        copia.iteraciones = this.iteraciones;
+        copia.admin = nuevoPermiso;
+
+        copia.validarDatos();
+        return copia;
+    }
 
     public boolean verificarContrasena(String contrasena) {
         if (contrasena == null || contrasena.isEmpty()) {
@@ -153,5 +168,11 @@ public class Usuario
 
     public boolean getAdmin() {
         return admin;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.usuario + "  -  " + this.nombre;
     }
 }

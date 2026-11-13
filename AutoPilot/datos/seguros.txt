@@ -28,11 +28,5 @@
     "tipo": "Seguro de automóvil",
     "cobertura": "Daños al vehículo y asistencia vial",
     "precio": 375.0
-  },
-  {
-    "aseguradora": "Aseguradora La Ceiba",
-    "tipo": "Todo riesgo",
-    "cobertura": "Total",
-    "precio": 400.0
   }
 ]

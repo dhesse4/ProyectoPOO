@@ -196,14 +196,22 @@ public class CompraRepuestos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCompraActionPerformed
-        // TODO add your handling code here:
-        
-        try {
+    
+        try 
+        {
             Repuesto repuesto = buscarRepuestoSeleccionado();
 
             if (repuesto == null) {
                 throw new IllegalArgumentException(
                         "Selecciona un repuesto."
+                );
+            }
+
+            Usuario comprador = datos.getUsuarioActual();
+
+            if (comprador == null) {
+                throw new IllegalArgumentException(
+                        "Debes iniciar sesión para completar la compra."
                 );
             }
 
@@ -234,42 +242,80 @@ public class CompraRepuestos extends javax.swing.JFrame {
 
             lblTotal.setText(String.format("Total: %.2f", total));
 
-            int respuesta =
-                    javax.swing.JOptionPane.showConfirmDialog(
-                            this,
-                            "Repuesto: " + repuesto
-                                    + "\nCantidad: " + cantidad
-                                    + "\nTotal: "
-                                    + String.format("%.2f", total)
-                                    + "\n¿Confirmar la venta?",
-                            "Confirmar venta",
-                            javax.swing.JOptionPane.YES_NO_OPTION
-                    );
+            int respuesta = javax.swing.JOptionPane.showConfirmDialog(
+                    this,
+                    "Repuesto: " + repuesto
+                            + "\nCantidad: " + cantidad
+                            + "\nTotal: " + String.format("%.2f", total)
+                            + "\n¿Confirmar la venta?",
+                    "Confirmar venta",
+                    javax.swing.JOptionPane.YES_NO_OPTION
+            );
 
             if (respuesta != javax.swing.JOptionPane.YES_OPTION) {
                 return;
             }
 
-            // Vuelve a validar el stock y guarda antes de modificarlo.
-            datos.venderRepuesto(repuesto, cantidad);
-            
-            Usuario comprador = datos.getUsuarioActual();
+            // Validamos la factura antes de descontar el stock.
+            Factura factura = new Factura(
+                    comprador.getNombre(),
+                    comprador.getUsuario(),
+                    "Repuesto: " + repuesto.getNombre()
+                            + " - " + repuesto.getMarca(),
+                    cantidad,
+                    repuesto.getPrecioVenta()
+            );
 
-Factura factura = new Factura(
-        comprador.getNombre(),
-        comprador.getUsuario(),
-        "Repuesto: " + repuesto.getNombre()
-                + " - " + repuesto.getMarca(),
-        cantidad,
-        repuesto.getPrecioVenta()
-);
+            // Este método vuelve a comprobar el stock y guarda la venta.
+            try {
+                datos.venderRepuesto(repuesto, cantidad);
 
-datos.agregarFactura(factura);
+            } catch (java.io.IOException e) {
+                logger.log(
+                        java.util.logging.Level.SEVERE,
+                        "Error al guardar la venta del repuesto",
+                        e
+                );
 
-            new VerFactura(factura).setVisible(true);
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "No se pudo completar el guardado de la venta.\n"
+                                + e.getMessage(),
+                        "Error de guardado",
+                        javax.swing.JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            // La venta ya está guardada.
+            try {
+                datos.registrarFactura(factura);
+
+            } catch (java.io.IOException | IllegalArgumentException e) {
+                logger.log(
+                        java.util.logging.Level.SEVERE,
+                        "Error al registrar la factura "
+                                + factura.getNumero(),
+                        e
+                );
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "La venta se guardó y el stock fue descontado, "
+                                + "pero no se pudo registrar esta factura.\n"
+                                + "Número: " + factura.getNumero()
+                                + "\n" + e.getMessage(),
+                        "Error al registrar la factura",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+            }
 
             txtCantidad.setText("");
             actualizarOpcionesRepuestos();
+
+            new VerFactura(factura).setVisible(true);
+            
+            this.dispose();
 
         } catch (NumberFormatException e) {
             javax.swing.JOptionPane.showMessageDialog(
@@ -281,22 +327,6 @@ datos.agregarFactura(factura);
             javax.swing.JOptionPane.showMessageDialog(
                     this,
                     e.getMessage()
-            );
-
-        } catch (java.io.IOException e) {
-            logger.log(
-                    java.util.logging.Level.SEVERE,
-                    "Error al guardar la venta",
-                    e
-            );
-
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "No se pudo guardar la venta.\n"
-                            + "El stock no fue descontado.\n"
-                            + e.getMessage(),
-                    "Error de guardado",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
         

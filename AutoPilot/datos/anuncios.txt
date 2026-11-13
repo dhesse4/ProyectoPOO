@@ -5,6 +5,16 @@
     "precio": 50000.0,
     "descripcion": "Un nuevo vehiculo ha llamado la atención de posibles compradores: El Tesla Roadster",
     "usuario": "Daniel Hesse",
+    "comentarios": [
+      "Tú: Hola"
+    ]
+  },
+  {
+    "tipo": "General",
+    "titulo": "Vendo carro",
+    "precio": 12000.0,
+    "descripcion": "Vendo mercedes",
+    "usuario": "Daniel Hesse",
     "comentarios": []
   }
 ]
